@@ -1,8 +1,22 @@
-<span *ngIf="afAuth.authState | async as user; else notLoggedIn">
-  {{user.email}}
-  <button (click)="logout()">Logout </button>
-</span>
-<ng-template #notLoggedIn>
-  You are not logged in
-</ng-template>
-<router-outlet></router-outlet>
+<md-toolbar color="primary">
+  <div fxLayout="row" fxFlex="100%" fxLayoutAlign="space-between center">
+    <a routerLink="/">
+      <h1>Rig Manager</h1>
+    </a>
+
+    <span>
+      <span *ngIf="afAuth.authState | async as user; else notLoggedIn">
+        <span>Welcome {{user.email}}</span>
+    <button md-button (click)="logout()">Logout </button>
+    </span>
+    <ng-template #notLoggedIn>
+      You are not logged in <a routerLink="/login">Login here</a>
+    </ng-template>
+    </span>
+  </div>
+</md-toolbar>
+
+
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>

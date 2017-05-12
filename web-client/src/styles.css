@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+/*@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';*/
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+/*@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';*/
+/*@import '~@angular/material/prebuilt-themes/purple-green.css';*/
+
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.main-content{
+  margin: 10px;
+}
+
+a{
+  color: black;
+  text-decoration: none;
+}
+
+a:hover{
+  color: blue;
+}

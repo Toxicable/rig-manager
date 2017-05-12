@@ -6,9 +6,14 @@
 
 
   <form [formGroup]="newPoolForm">
-    <input formControlName="name">
-    <input formControlName="url">
-    <button (click)="poolMonitoring.createMonitor(newPoolForm.value)">Add</button>
+    Add new pool to monitor
+    <md-select formControlName="name">
+      <md-option value="Ethermine">Ethermine</md-option>
+    </md-select>
+    <md-input-container>
+      <input mdInput formControlName="url" placeholder="Url">
+    </md-input-container>
+    <button md-button (click)="poolMonitoring.createMonitor(newPoolForm.value)">Add</button>
   </form>
 
 

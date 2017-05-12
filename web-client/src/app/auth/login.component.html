@@ -1,7 +1,10 @@
-
 <form [formGroup]="loginForm">
-  <input formControlName="email">
-  <input formControlName="password">
-  <button (click)="register()">Register</button>
-  <button (click)="login()">Login</button>
+  <md-input-container class="example-full-width">
+    <input mdInput formControlName="email" placeholder="Email">
+  </md-input-container>
+  <md-input-container class="example-full-width">
+    <input mdInput formControlName="password" placeholder="Password">
+  </md-input-container>
+  <button md-button (click)="login()">Login</button>
+  <button md-button (click)="register()">Register</button>
 </form>
