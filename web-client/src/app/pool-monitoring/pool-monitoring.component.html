@@ -1,0 +1,20 @@
+<div>
+
+  <div>
+    Updated at <span>{{clock.timer | async | date:'hh:mm:ss'}}</span>
+  </div>
+
+
+  <form [formGroup]="newPoolForm">
+    <input formControlName="name">
+    <input formControlName="url">
+    <button (click)="poolMonitoring.createMonitor(newPoolForm.value)">Add</button>
+  </form>
+
+
+  <div *ngFor="let pool of poolMonitoring.poolData | async">
+    {{pool.name}} {{pool.reportedHashRate}} {{pool.unpaid/1000000000000000000}}
+
+  </div>
+
+</div>

@@ -1,0 +1,8 @@
+<span *ngIf="afAuth.authState | async as user; else notLoggedIn">
+  {{user.email}}
+  <button (click)="logout()">Logout </button>
+</span>
+<ng-template #notLoggedIn>
+  You are not logged in
+</ng-template>
+<router-outlet></router-outlet>
