@@ -1,11 +1,13 @@
 <div>
+  <h2>Pool Monitoring</h2>
 
   <div>
-    Updated at <span>{{clock.timer | async | date:'hh:mm:ss'}}</span>
+    Updated at: <span>{{clock.timer | async | date:'hh:mm:ss'}}</span> <br>
+    Current Time: <span>{{clock.currentTime | async | date:'hh:mm:ss'}}</span>
   </div>
 
 
-  <form [formGroup]="newPoolForm">
+  <!--<form [formGroup]="newPoolForm">
     Add new pool to monitor
     <md-select formControlName="name">
       <md-option value="Ethermine">Ethermine</md-option>
@@ -14,7 +16,7 @@
       <input mdInput formControlName="url" placeholder="Url">
     </md-input-container>
     <button md-button (click)="poolMonitoring.createMonitor(newPoolForm.value)">Add</button>
-  </form>
+  </form>-->
 
 
   <div *ngFor="let pool of poolMonitoring.poolData | async">

@@ -1,2 +1,30 @@
 Dashboard
 <rm-pool-monitoring></rm-pool-monitoring>
+
+<h2>Rigs</h2>
+<table>
+  <thead>
+    <td>Name</td>
+    <td>Is Active</td>
+    <td>ETH Hashrate</td>
+    <td>Seconddary Hashrate</td>
+    <td>GPU Temp</td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rig of rigService.rigs | async" style="width:100%" class="gray-background">
+      <td>{{rig.mac}}</td>
+      <td>{{rig.IsActive}}</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>{{rig.CoreTemp}}</td>
+      <td>
+        <button md-raised-button (click)="currentConsole = rig.console" >Show Console</button>
+        <button md-raised-button >Settings</button>
+        </td>
+    </tr>
+  </tbody>
+</table>
+<button md-raised-button *ngIf="currentConsole != null" (click)="currentConsole = null" >Clear Current Console</button>
+<div *ngFor="let line of currentConsole">
+  {{line.PostedAt | date:'hh:mm:ss'}}: {{line.Message}}
+</div>

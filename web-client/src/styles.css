@@ -23,3 +23,12 @@ a{
 a:hover{
   color: blue;
 }
+
+table{
+  table-layout: fixed;
+  width: 100%;
+}
+
+.gray-background{
+  background-color: lightgray;
+}

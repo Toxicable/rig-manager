@@ -1,3 +1,4 @@
+import { RigService } from './rig.service';
 import { HttpProxyService } from './proxy.service';
 import { ClockSerice } from './clock.service';
 import { PoolMonitoringService } from './pool-monitoring/pool-monitoring.service';
@@ -54,6 +55,7 @@ import 'hammerjs';
     HttpModule
   ],
   providers: [
+    RigService,
     PoolMonitoringService,
     ClockSerice,
     HttpProxyService,
