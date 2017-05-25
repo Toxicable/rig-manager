@@ -10,5 +10,6 @@ namespace ToxicMonitor
     {
         public string Message { get; set; }
         public string PostedAt { get; set; }
+        public string ReportedBy { get; set; }
     }
 }
