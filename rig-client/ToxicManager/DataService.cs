@@ -26,9 +26,18 @@ namespace ToxicMonitor
             var ap = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
             var auth = await ap.SignInWithEmailAndPasswordAsync(email, password);
 
+            var options = new FirebaseOptions
+{
+
+}
+
             _client = new FirebaseClient(basePath, new FirebaseOptions
             {
-                AuthTokenAsyncFactory = () => Task.FromResult(auth.FirebaseToken)
+                AuthTokenAsyncFactory = () => Task.FromResult(auth.FirebaseToken),
+                JsonSerializerSettings = new JsonSerializerSettings
+                {
+                  ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }
             });
 
             await Log($"Getting MAC Address...");
@@ -42,7 +51,7 @@ namespace ToxicMonitor
             _user = _client.Child($"{auth.User.LocalId}");
             _log = _client.Child($"{auth.User.LocalId}/rigs/{MAC}/console");
 
-            _logQueue.ForEach( async l => await LogQueued(l));
+            _logQueue.ForEach(async l => await LogQueued(l));
 
             await Log($"MAC: {MAC}");
             await Log($"IPAddress: {ip}");
@@ -68,26 +77,45 @@ namespace ToxicMonitor
             await _rig.PatchAsync(stats);
         }
 
-        public async Task Log(string msg)
-        {
-            var log = new Log
+        public async Task Log(string msg){
+          Log(new Log
             {
                 Message = msg,
                 PostedAt = DateTime.Now.ToString("o")
-            };
-            if(_log != null)
+            };)
+
+        }
+        public async Task Log(Log log)
+        {
+            if(_log == null)
             {
-                await _log.PostAsync(log);
-            } else
-            {
-                _logQueue.Add(log);
+              _logQueue.Add(log);
+              return;
             }
+            
+            try{
+
+              await _log.PostAsync(log);
+            } catch(Exception ex){
+              var exceptionLog = new Log{
+                Message = $"An Exception Occured: {ex.Message}",
+                  PostedAt = DateTime.Now.ToString("o")
+              };
+              Console.WriteLine(exceptionLog.Message);
+              _logQueue.Add(exceptionLog);
+              _logQueue.Add(_log)
+            }
+           
 
             Console.WriteLine(msg);
         }
-        public async Task LogQueued(Log log)
+        public async Task ClearLogged(Log log)
         {
+          for (int i = 0; i < _logQueue.Length; i++)
+          {
             await _log.PostAsync(log);
+            _logQueue[i]
+          }
         }
 
         private async Task<string> GetIpAddress()
