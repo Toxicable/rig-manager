@@ -34,13 +34,16 @@ function getWhattomine(){
       const coin = coins[name];
       return {
         name,
-        difficulty: coin.difficulty,
         exchangeRate: coin.exchange_rate,
         profitablity: coin.profitability,
         tag: coin.tag,
-        blockReward: coin.block_reward
+        blockReward: coin.block_reward,
+        blockTime: coin.block_time,
+        networkHashrate: coin.nethash,
+        algo: coin.algorithm
       }
     })
+    transformed = transformed.filter(coin => !coin.name.toLowerCase().includes("nicehash"))
     return sources.whattomine.ref.set(transformed);
   })
 }

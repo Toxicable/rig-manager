@@ -10,7 +10,7 @@ import { FormControl } from "@angular/forms";
 export class DashboardComponent {
 
   coins$: Observable<any[]>;
-  btcToNzd$: Observable<any[]>;
+  btcToNzd$: Observable<any>;
   ethProfitablity$: Observable<any[]>;
 
   powerControl = new FormControl('3150');
@@ -36,11 +36,11 @@ export class DashboardComponent {
         const hoursPerMonth = 730;
         const daysPerMonth = hoursPerMonth / 24;
         const electrictyPerMonth = +wattage * hoursPerMonth * +powerCost / 1000;
-        return coins.filter(coin => coin.tag === "ETH" || coin.tag === "ETC").map(coin => {
-          const coinsPerDay = (coin.blockReward * +hashrate * 1000 / coin.difficulty) * (5.662224e15 / Math.pow(2, 48));
-          const btcPerMonth = coin.exchangeRate * coinsPerDay * 30.4;
-          coin.nzdPerMonth = +btcToNzd * btcPerMonth;
-          coin.profitPerMonth = coin.nzdPerMonth.price - electrictyPerMonth;
+        return coins.filter(coin => coin.algo === 'Ethash').map(coin => {
+          const coinsPerHour = (hashrate * 1000000) / coin.networkHashrate * 3600 / coin.blockTime * coin.blockReward
+          const btcPerMonth = coin.exchangeRate * coinsPerHour * hoursPerMonth;
+          coin.nzdPerMonth = btcToNzd.price * btcPerMonth;
+          coin.profitPerMonth = coin.nzdPerMonth - electrictyPerMonth;
           return coin;
         })
       }
