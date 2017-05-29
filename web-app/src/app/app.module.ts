@@ -27,6 +27,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/combineLatest';
 
 import 'hammerjs';
 
@@ -51,7 +52,7 @@ import 'hammerjs';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     HttpModule
   ],
   providers: [

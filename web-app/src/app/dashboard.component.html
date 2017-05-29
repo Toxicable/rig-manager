@@ -1,7 +1,52 @@
 Dashboard
 <rm-pool-monitoring></rm-pool-monitoring>
 
-<h2>Rigs</h2>
+Hashrate:: <input [formControl]="hashrateControl">MH <br>
+Power use: <input [formControl]="powerControl">W <br>
+Power cost <input [formControl]="powerCostControl">$ <br>
+
+Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank" [href]="btcToNzd.url">{{btcToNzd.price}}</a></span>
+
+<h2>ETH/ETC</h2>
+<table>
+  <thead>
+    <td>Tag</td>
+    <td>Name</td>
+    <td>Profitablity</td>
+    <td>Exchange Rate (BTC)</td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let coin of ethProfitablity$ | async">
+      <td>{{coin.tag}}</td>
+      <td>{{coin.name}}</td>
+      <td>{{coin.profitablity}}</td>
+      <td>{{coin.exchangeRate}}</td>
+      <td>{{coin.profitPerMonth}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h2>Coins</h2>
+<table>
+  <thead>
+    <td>Tag</td>
+    <td>Name</td>
+    <td>Profitablity</td>
+    <td>Exchange Rate (BTC)</td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let coin of coins$ | async">
+      <td>{{coin.tag}}</td>
+      <td>{{coin.name}}</td>
+      <td>{{coin.profitablity}}</td>
+      <td>{{coin.exchangeRate}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!--<h2>Rigs</h2>
 <table>
   <thead>
     <td>Name</td>
@@ -27,4 +72,4 @@ Dashboard
 <button md-raised-button *ngIf="currentConsole != null" (click)="currentConsole = null" >Clear Current Console</button>
 <div *ngFor="let line of currentConsole">
   {{line.PostedAt | date:'hh:mm:ss'}}: {{line.Message}}
-</div>
+</div>-->
