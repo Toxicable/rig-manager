@@ -38,8 +38,7 @@ def stream_handler(message):
     if(rig.shouldRestart):
       rebootRig(rig.ip)
 
-rigsStream = db.child(USER['localId'] + '/rigs').stream(stream_handler, user['idToken'])
-
+rigsStream = db.child(user['localId'] + '/rigs').stream(stream_handler, user['idToken'])
 
 
 def refresh_token():
