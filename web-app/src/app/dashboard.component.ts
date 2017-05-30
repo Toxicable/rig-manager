@@ -3,11 +3,24 @@ import { Observable } from 'rxjs/Observable';
 import { RigService } from './rig.service';
 import { Component } from '@angular/core';
 import { FormControl } from "@angular/forms";
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'rm-dashboard',
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'dashboard.component.html',
+  animations: [
+    trigger('flashChange', [
+      transition('* => *', [
+        style({ 'background-color': 'green' }),
+        animate(2500, style({ 'background-color': 'white' }))
+      ])
+    ])
+  ]
 })
 export class DashboardComponent {
+
+  trackByName(idx, item){
+    return item['tag'];
+  }
 
   coins$: Observable<any[]>;
   btcToNzd$: Observable<any>;
