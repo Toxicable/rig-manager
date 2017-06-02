@@ -1,6 +1,8 @@
 # pylint: disable-all
 import sys
 import pyrebase
+import urllib2
+import datetime
 
 from threading import Timer
 from time import sleep
@@ -21,12 +23,17 @@ for pin in pinMapping.values():
   gpio.setcfg(pin, gpio.OUTPUT)
   gpio.output(pin, gpio.HIGH)
 
-def turnOn(number):
-  print('sending current into:' + str(number) + ' at port: ')
+def pressButton(number):
+  print('presing button: ' + str(number))
   pin = pinMapping[number]
   gpio.output(pin, gpio.LOW)
-  sleep(2)
+  sleep(0.5)
   gpio.output(pin, gpio.HIGH)
+
+def reset(number):
+  pressButton(number)
+  sleep(10)
+  pressButton(number)
 
 argsConfig = {}
 
@@ -58,14 +65,14 @@ db = firebase.database()
 
 def stream_handler(message):
   try:
-    rigs = db.child(user['localId'] + '/rigs').get(user['idToken'])
-    for rig in rigs.each():
+    print('noticed a change in the DB, check to see if we should restart something')
+    for rig in db.child(user['localId'] + '/rigs').get(user['idToken']).each():
       value = rig.val()
       key = rig.key()
       if not value:
         continue
       if(value['shouldRestart']):
-        turnOn(key)
+        reset(key)
         db.child(user['localId'] + '/rigs/' + str(key) + '/shouldRestart').set(False, user['idToken'])
   except Exception as ex:
     print('an error occured :/')
@@ -74,11 +81,37 @@ def stream_handler(message):
 
 rigsStream = db.child(user['localId'] + '/rigs').stream(stream_handler, user['idToken'])
 
+def pingRigs():
+  try:
+    print('pining rigs')
+    db.child(user['localId'] + '/lastPingCheck').set(datetime.datetime.now().isoformat(), user['idToken'])
+    for rig in db.child(user['localId'] + '/rigs').get(user['idToken']).each():
+      value = rig.val()
+      if value and 'ipAddress' in value:
+        try:
+          body = urllib2.urlopen('http://' + value['ipAddress'] + ':3333').read()
+        except Exception as ex:
+          print('failed to ping IP:' + value['ipAddress'])
+          print(ex.message)
+          reset(rig.key())
+          pass
+        if not body:
+          reset(rig.key())
+  except Exception as ex:
+    print('an error occured :/')
+    print(ex.message)
+    pass
+
+
+aliveTimer = Timer(5 * 60, pingRigs)
+aliveTimer.start()
+pingRigs()
 
 def refresh_token():
-    user = auth.sign_in_with_email_and_password(email, password)
-    user = auth.refresh(user['refreshToken'])
-    db.child(user['localId'] + '/rigs').stream(stream_handler, user['idToken'])
+  print('refreshing auth token')
+  user = auth.sign_in_with_email_and_password(email, password)
+  user = auth.refresh(user['refreshToken'])
+  db.child(user['localId'] + '/rigs').stream(stream_handler, user['idToken'])
 
 refreshTimer = Timer(20 * 60, refresh_token)
 refreshTimer.start()
