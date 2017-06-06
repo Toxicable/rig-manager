@@ -1,27 +1,30 @@
 Dashboard
 <rm-pool-monitoring></rm-pool-monitoring>
 
+<resetter></resetter>
+
+<h2>Profitablity</h2>
+
 Hashrate:: <input [formControl]="hashrateControl">MH <br>
 Power use: <input [formControl]="powerControl">W <br>
 Power cost <input [formControl]="powerCostControl">$ <br>
 
-Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank" [@flashChange]="btcToNzd.price" [href]="btcToNzd.url">{{btcToNzd.price}}</a></span>
+Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank" [@flashChange]="btcToNzd.price" [href]="btcToNzd.url">{{btcToNzd.price | currency:'NZD':true}}</a></span>
 
-<h2>ETH/ETC</h2>
+<h2>EtHash</h2>
 <table>
   <thead>
     <td>Tag</td>
     <td>Name</td>
-    <td>Profitablity</td>
     <td>Exchange Rate (BTC)</td>
+    <td>Profit per Month</td>
   </thead>
   <tbody>
     <tr *ngFor="let coin of ethProfitablity$ | async; trackBy: trackByName; let i = index" [@flashChange]="i" >
       <td>{{coin.tag}}</td>
       <td>{{coin.name}}</td>
-      <td [@flashChange]="coin.profitablity">{{coin.profitablity}}</td>
       <td [@flashChange]="coin.exchangeRate">{{coin.exchangeRate}}</td>
-      <td [@flashChange]="coin.profitPerMonth">{{coin.profitPerMonth}}</td>
+      <td [@flashChange]="coin.profitPerMonth">{{coin.profitPerMonth | currency:'NZD':true}}</td>
     </tr>
   </tbody>
 </table>

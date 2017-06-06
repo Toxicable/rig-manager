@@ -1,3 +1,5 @@
+import { AddRigComponent } from './resetter/add-rig.component';
+import { ResetterComponent } from './resetter/resetter.component';
 import { RigService } from './rig.service';
 import { HttpProxyService } from './proxy.service';
 import { ClockSerice } from './clock.service';
@@ -17,7 +19,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import { LoginComponent } from "app/auth/login.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCheckboxModule, MdToolbarModule, MdInputModule, MdSelectModule} from '@angular/material';
+import { MdButtonModule, MdDialogModule, MdCheckboxModule, MdToolbarModule, MdInputModule, MdSelectModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
@@ -37,10 +39,16 @@ import 'hammerjs';
     LoginComponent,
     DashboardComponent,
     PoolMonitoringComponent,
+    ResetterComponent,
+    AddRigComponent,
+  ],
+  entryComponents: [
+    AddRigComponent
   ],
   imports: [
     appRouting,
     MdButtonModule,
+    MdDialogModule,
     MdCheckboxModule,
     MdToolbarModule,
     MdInputModule,

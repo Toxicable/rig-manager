@@ -1,0 +1,8 @@
+<h2>Resetter</h2>
+<button md-raised-button (click)="add()">Add</button>
+<div *ngFor="let rig of rigs$ | async">
+  <div>
+    {{rig.name}}: <span>{{rig.ipAddress}}</span> <span>{{rig.port}}</span>
+    <button md-raised-button (click)="resetRig(rig.$key)" [disabled]="rig.shouldRestart" >{{rig.shouldRestart ? 'Rig resetting' : 'Reset Rig'}}</button>
+  </div>
+</div>

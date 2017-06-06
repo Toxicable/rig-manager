@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToxicMonitor", "ToxicMonitor\ToxicMonitor.csproj", "{8B0862CE-5CC1-40C0-915B-D470B127DBBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToxicMonitor", "ToxicManager\ToxicMonitor.csproj", "{8B0862CE-5CC1-40C0-915B-D470B127DBBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

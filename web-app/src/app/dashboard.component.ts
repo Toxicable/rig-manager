@@ -1,3 +1,5 @@
+import { Ad } from './models/localbitcoin-ad';
+import { Coin } from './models/whattomine-coin';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { RigService } from './rig.service';
@@ -22,7 +24,7 @@ export class DashboardComponent {
     return item['tag'];
   }
 
-  coins$: Observable<any[]>;
+  coins$: Observable<Coin[]>;
   btcToNzd$: Observable<any>;
   ethProfitablity$: Observable<any[]>;
 
@@ -34,7 +36,7 @@ export class DashboardComponent {
     private afDb: AngularFireDatabase,
   ) {
     this.btcToNzd$ = afDb.list('external-data/localbitcoins')
-      .map(coinAds => coinAds.sort((a, b) => a - b)[0])
+      .map((coinAds: Ad[]) => coinAds.sort((a, b) => +b.price - +a.price )[0])
 
     this.coins$ = afDb.list('external-data/whattomine')
       .map(coins => coins.sort((a, b) => b.profitablity - a.profitablity )),
@@ -50,17 +52,14 @@ export class DashboardComponent {
         const daysPerMonth = hoursPerMonth / 24;
         const electrictyPerMonth = +wattage * hoursPerMonth * +powerCost / 1000;
         return coins.filter(coin => coin.algo === 'Ethash').map(coin => {
-          const coinsPerHour = (hashrate * 1000000) / coin.networkHashrate * 3600 / coin.blockTime * coin.blockReward
+          const coinsPerHour = (hashrate * 1000000) / +coin.networkHashrate * 3600 / +coin.blockTime * coin.blockReward
           const btcPerMonth = coin.exchangeRate * coinsPerHour * hoursPerMonth;
-          coin.nzdPerMonth = btcToNzd.price * btcPerMonth;
-          coin.profitPerMonth = coin.nzdPerMonth - electrictyPerMonth;
+          const nzdPerMonth = btcToNzd.price * btcPerMonth;
+          coin.profitPerMonth = nzdPerMonth - electrictyPerMonth;
           return coin;
         })
       }
     )
-
   }
-
-  currentConsole: any[];
 
 }

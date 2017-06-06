@@ -12,28 +12,27 @@ from pyA20.gpio import port
 print('settting up GPIO')
 gpio.init()
 
-pinMapping = {
-    1: port.PA7,
-    2: port.PA8,
-    3: port.PA9,
-    4: port.PA10,
-  }
+ports = {
+  'PA7': port.PA7,
+  'PA8': port.PA8,
+  'PA9': port.PA9,
+  'PA10': port.PA10,
+}
 
-for pin in pinMapping.values():
+for pin in ports.values():
   gpio.setcfg(pin, gpio.OUTPUT)
   gpio.output(pin, gpio.HIGH)
 
-def pressButton(number):
-  print('presing button: ' + str(number))
-  pin = pinMapping[number]
-  gpio.output(pin, gpio.LOW)
+def pressButton(port):
+  print('pressing port: ' + str(port))
+  gpio.output(ports[port], gpio.LOW)
   sleep(0.5)
-  gpio.output(pin, gpio.HIGH)
+  gpio.output(ports[port], gpio.HIGH)
 
-def reset(number):
-  pressButton(number)
+def reset(port):
+  pressButton(port)
   sleep(10)
-  pressButton(number)
+  pressButton(port)
 
 argsConfig = {}
 
@@ -65,15 +64,16 @@ db = firebase.database()
 
 def stream_handler(message):
   try:
-    print('noticed a change in the DB, check to see if we should restart something')
+    print('noticed a change in the DB, checking to see if we should restart something')
     for rig in db.child(user['localId'] + '/rigs').get(user['idToken']).each():
       value = rig.val()
       key = rig.key()
       if not value:
         continue
       if(value['shouldRestart']):
-        reset(key)
+        reset(value['port'])
         db.child(user['localId'] + '/rigs/' + str(key) + '/shouldRestart').set(False, user['idToken'])
+    print('check done')
   except Exception as ex:
     print('an error occured :/')
     print(ex.message)
@@ -83,7 +83,7 @@ rigsStream = db.child(user['localId'] + '/rigs').stream(stream_handler, user['id
 
 def pingRigs():
   try:
-    print('pining rigs')
+    print('pinging rigs')
     db.child(user['localId'] + '/lastPingCheck').set(datetime.datetime.now().isoformat(), user['idToken'])
     for rig in db.child(user['localId'] + '/rigs').get(user['idToken']).each():
       value = rig.val()
@@ -93,10 +93,10 @@ def pingRigs():
         except Exception as ex:
           print('failed to ping IP:' + value['ipAddress'])
           print(ex.message)
-          reset(rig.key())
+          reset(value['port'])
           pass
         if not body:
-          reset(rig.key())
+          reset(value['port'])
   except Exception as ex:
     print('an error occured :/')
     print(ex.message)
@@ -109,7 +109,6 @@ pingRigs()
 
 def refresh_token():
   print('refreshing auth token')
-  user = auth.sign_in_with_email_and_password(email, password)
   user = auth.refresh(user['refreshToken'])
   db.child(user['localId'] + '/rigs').stream(stream_handler, user['idToken'])
 
