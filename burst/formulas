@@ -1,0 +1,8 @@
+
+Burst_per_day = ( 24 x 60 x A x B ) / (4 x C)
+A is the current Block reaward (this month it is 2919Burst, but this value decrease 5% each month!)
+B is your Plot size in TB
+C is the current Network size in TB
+
+https://github.com/bhamon/gpuPlotGenerator/releases/download/v4.0.3/gpuPlotGenerator-bin-linux-ubuntu-16.04.1-x64-4.0.3.tar.gz
+

@@ -5,13 +5,14 @@
     </a>
 
     <span>
+      <button md-button (click)="openSettings()">Settings</button>
       <span *ngIf="afAuth.authState | async as user; else notLoggedIn">
         <span>Welcome {{user.email}}</span>
-    <button md-button (click)="logout()">Logout </button>
-    </span>
-    <ng-template #notLoggedIn>
-      You are not logged in <a routerLink="/login">Login here</a>
-    </ng-template>
+        <button md-button (click)="logout()">Logout </button>
+      </span>
+      <ng-template #notLoggedIn>
+        You are not logged in <a routerLink="/login">Login here</a>
+      </ng-template>
     </span>
   </div>
 </md-toolbar>

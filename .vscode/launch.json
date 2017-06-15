@@ -4,20 +4,23 @@
           {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}\\data-collector\\dist\\app.js",
+            "name": "Map Drives",
+            "program": "${workspaceRoot}\\burst\\map-drives.js",
             "cwd": "${workspaceRoot}",
             "outFiles": [],
             "env": {
             }
         },
-        {
+          {
             "type": "node",
-            "request": "attach",
-            "name": "Attach to Process",
-            "port": 5858,
-            "outFiles": []
-        },
+            "request": "launch",
+            "name": "Data Collector",
+            "program": "${workspaceRoot}\\data-collector\\dist\\app.js",
+            "cwd": "${workspaceRoot}",
+            "outFiles": [],
+            "env": {
+            }
+          },
         {
             "name": "Python",
             "type": "python",

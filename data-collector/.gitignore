@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-rig-monitor-594db-firebase-adminsdk-je7b4-12b2fb281b.json
+firebase-adminsdk-key.json
 
 # compiled output
 /dist

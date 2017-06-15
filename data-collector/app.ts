@@ -4,7 +4,9 @@ import * as http from 'http';
 import * as rp from 'request-promise-native';
 import * as admin from 'firebase-admin'
 
-var serviceAccount = require("./rig-monitor-594db-firebase-adminsdk-je7b4-12b2fb281b.json");
+console.log('starting up...')
+
+var serviceAccount = require("./firebase-adminsdk-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -40,6 +42,7 @@ function getWhattomine(){
         blockReward: coin.block_reward,
         blockTime: coin.block_time,
         networkHashrate: coin.nethash,
+        difficulty: coin.difficulty,
         algo: coin.algorithm
       }
     })
@@ -65,6 +68,7 @@ function getLocalbitcoins(){
 }
 
 function refreshData(){
+  console.log('refreshing data')
   getWhattomine().then();
   getLocalbitcoins().then();
 
@@ -74,6 +78,7 @@ var interval = setInterval(() => {
   refreshData();
 }, 10000)
 refreshData();
+console.log('ready to go!')
 // http.createServer(function (request, response) {
 //   response.writeHead(200, { 'Content-Type': 'text/plain' });
 //   response.end('You\'re not really meant to be here');

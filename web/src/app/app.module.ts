@@ -32,6 +32,8 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/combineLatest';
 
 import 'hammerjs';
+import { FormInputComponent } from "app/shared/form-input.component";
+import { SettingsComponent } from "app/settings/settings.component";
 
 @NgModule({
   declarations: [
@@ -41,9 +43,12 @@ import 'hammerjs';
     PoolMonitoringComponent,
     ResetterComponent,
     AddRigComponent,
+    FormInputComponent,
+    SettingsComponent,
   ],
   entryComponents: [
-    AddRigComponent
+    AddRigComponent,
+    SettingsComponent,
   ],
   imports: [
     appRouting,

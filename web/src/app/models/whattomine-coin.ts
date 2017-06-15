@@ -7,5 +7,6 @@ export interface Coin{
   networkHashrate: string;
   profitablity: number;
   tag: string;
+  difficulty: number;
   profitPerMonth: number;
 }

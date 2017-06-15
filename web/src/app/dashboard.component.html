@@ -5,9 +5,9 @@ Dashboard
 
 <h2>Profitablity</h2>
 
-Hashrate:: <input [formControl]="hashrateControl">MH <br>
-Power use: <input [formControl]="powerControl">W <br>
-Power cost <input [formControl]="powerCostControl">$ <br>
+Hashrate: <form-input [control]="hashrateControl"></form-input>MH <br>
+Power use: <form-input [control]="powerControl"></form-input>W <br>
+Power cost <form-input [control]="powerCostControl"></form-input>$ <br>
 
 Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank" [@flashChange]="btcToNzd.price" [href]="btcToNzd.url">{{btcToNzd.price | currency:'NZD':true}}</a></span>
 
@@ -16,6 +16,7 @@ Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank
   <thead>
     <td>Tag</td>
     <td>Name</td>
+    <td>Difficulty</td>
     <td>Exchange Rate (BTC)</td>
     <td>Profit per Month</td>
   </thead>
@@ -23,6 +24,7 @@ Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank
     <tr *ngFor="let coin of ethProfitablity$ | async; trackBy: trackByName; let i = index" [@flashChange]="i" >
       <td>{{coin.tag}}</td>
       <td>{{coin.name}}</td>
+      <td [@flashChange]="coin.exchangeRate">{{coin.difficulty}}</td>
       <td [@flashChange]="coin.exchangeRate">{{coin.exchangeRate}}</td>
       <td [@flashChange]="coin.profitPerMonth">{{coin.profitPerMonth | currency:'NZD':true}}</td>
     </tr>
@@ -30,7 +32,7 @@ Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank
 </table>
 
 
-<h2>Coins</h2>
+<!--<h2>Coins</h2>
 <table>
   <thead>
     <td>Tag</td>
@@ -47,7 +49,7 @@ Best localbitcoin: <span *ngIf="btcToNzd$ | async as btcToNzd"><a target="_blank
     </tr>
   </tbody>
 </table>
-
+-->
 
 <!--<h2>Rigs</h2>
 <table>
