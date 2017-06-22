@@ -25,7 +25,7 @@ export class DashboardComponent {
   }
 
   coins$: Observable<Coin[]>;
-  btcToNzd$: Observable<any>;
+  btcToNzd$: Observable<Ad>;
   ethProfitablity$: Observable<any[]>;
 
   powerControl = new FormControl('3150');
@@ -36,30 +36,32 @@ export class DashboardComponent {
     private afDb: AngularFireDatabase,
   ) {
     this.btcToNzd$ = afDb.list('external-data/localbitcoins')
-      .map((coinAds: Ad[]) => coinAds.sort((a, b) => +b.price - +a.price )[0])
+      .map((coinAds: Ad[]) => coinAds.sort((a, b) => +b.price - +a.price )[0]);
 
     this.coins$ = afDb.list('external-data/whattomine')
-      .map(coins => coins.sort((a, b) => b.profitablity - a.profitablity )),
+      .map(coins => coins.sort((a, b) => b.profitablity - a.profitablity ));
+
+    const hoursPerMonth = 730;
 
     this.ethProfitablity$ = Observable.combineLatest(
-      this.btcToNzd$,
+      this.btcToNzd$.first(),
       this.coins$,
       this.powerControl.valueChanges.startWith(3150),
       this.powerCostControl.valueChanges.startWith(0.19),
       this.hashrateControl.valueChanges.startWith(600),
       (btcToNzd, coins, wattage, powerCost, hashrate) => {
-        const hoursPerMonth = 730;
-        const daysPerMonth = hoursPerMonth / 24;
         const electrictyPerMonth = +wattage * hoursPerMonth * +powerCost / 1000;
         return coins.filter(coin => coin.algo === 'Ethash').map(coin => {
           const coinsPerHour = (hashrate * 1000000) / +coin.networkHashrate * 3600 / +coin.blockTime * coin.blockReward
           const btcPerMonth = coin.exchangeRate * coinsPerHour * hoursPerMonth;
-          const nzdPerMonth = btcToNzd.price * btcPerMonth;
+          const nzdPerMonth = +btcToNzd.price * btcPerMonth;
           coin.profitPerMonth = nzdPerMonth - electrictyPerMonth;
           return coin;
+
         })
       }
     )
+    this.ethProfitablity$.subscribe(a => console.log(a))
   }
 
 }
