@@ -61,7 +61,6 @@ export class DashboardComponent {
         })
       }
     )
-    this.ethProfitablity$.subscribe(a => console.log(a))
   }
 
 }
