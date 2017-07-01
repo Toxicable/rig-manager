@@ -22,12 +22,12 @@
             }
           },
         {
-            "name": "Python",
+            "name": "Resetter",
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
             "pythonPath": "C:\\Python27\\python.exe",
-            "program": "${file}",
+            "program": "${workspaceRoot}\\resetter\\resetter.py",
             "cwd": "${workspaceRoot}",
             "args": [
               "-email",
